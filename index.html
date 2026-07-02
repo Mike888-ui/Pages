@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RealEstateAI V7｜黑科技賣屋雲端系統</title>
+<style>
+:root{
+  --bg:#040812;--panel:rgba(9,17,34,.86);--panel2:rgba(15,23,42,.92);--line:rgba(125,211,252,.25);
+  --text:#e5f4ff;--muted:#94a3b8;--cyan:#22d3ee;--blue:#3b82f6;--green:#10b981;--red:#ef4444;--amber:#f59e0b;
+  --shadow:0 24px 80px rgba(0,0,0,.48);--radius:20px;
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;overflow:auto;font-family:"Microsoft JhengHei",Arial,sans-serif;background:var(--bg);color:var(--text)}
+body:before{content:"";position:fixed;inset:0;z-index:-3;background:#020617 url("assets/black_tech_realestate_bg.png") center/cover no-repeat;filter:saturate(1.08) contrast(1.04);}
+body:after{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 18% 15%,rgba(34,211,238,.24),transparent 35%),linear-gradient(90deg,rgba(2,6,23,.85),rgba(2,6,23,.45),rgba(2,6,23,.92)),linear-gradient(180deg,rgba(2,6,23,.3),#020617 90%)}
+button,input,select,textarea{font-family:inherit}a{color:var(--cyan)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(2,6,23,.82);backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#0ea5e9,#22d3ee,#111827);box-shadow:0 0 32px rgba(34,211,238,.55);display:grid;place-items:center;font-weight:1000;color:#00111b}.brand h1{font-size:18px;margin:0}.brand span{display:block;font-size:12px;color:var(--muted);margin-top:2px}.userbox{text-align:right;font-size:13px;color:var(--muted)}
+.shell{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:calc(100vh - 72px)}
+.nav{position:sticky;top:71px;height:calc(100vh - 72px);overflow:auto;padding:16px;border-right:1px solid var(--line);background:rgba(2,6,23,.58);backdrop-filter:blur(16px)}
+.nav .group{font-size:12px;color:#67e8f9;margin:12px 8px 7px;letter-spacing:.08em}.nav button{width:100%;border:1px solid transparent;background:transparent;color:var(--text);padding:12px 12px;border-radius:14px;text-align:left;font-weight:800;cursor:pointer;margin:3px 0;display:flex;align-items:center;justify-content:space-between;gap:8px}.nav button:hover,.nav button.on{background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.28);box-shadow:inset 0 0 0 1px rgba(59,130,246,.12)}
+main{min-width:0;padding:22px;overflow:auto}.hero{min-height:390px;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;position:relative;background:linear-gradient(135deg,rgba(2,6,23,.48),rgba(8,47,73,.25));display:grid;align-items:end;padding:36px;margin-bottom:18px}.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,6,23,.95),rgba(2,6,23,.35),rgba(2,6,23,.88));}.hero:after{content:"";position:absolute;inset:-1px;background-image:linear-gradient(rgba(34,211,238,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.08) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(90deg,#000,transparent 72%);opacity:.7}.hero-content{position:relative;z-index:2;max-width:760px}.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(34,211,238,.4);background:rgba(8,47,73,.42);color:#a5f3fc;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:900}.hero h2{font-size:42px;line-height:1.12;margin:16px 0 10px}.hero p{font-size:16px;color:#cbd5e1;line-height:1.75;max-width:760px}.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.card{background:var(--panel);border:1px solid rgba(125,211,252,.22);border-radius:var(--radius);box-shadow:0 18px 60px rgba(0,0,0,.28);padding:18px;margin-bottom:16px;backdrop-filter:blur(18px)}.card h2,.card h3{margin:0 0 12px}.glass{background:rgba(15,23,42,.72)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.formgrid{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:12px}.formgrid3{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:12px}.field label{display:block;color:#bae6fd;font-size:13px;font-weight:800;margin:0 0 6px}
+input,select,textarea{width:100%;border:1px solid rgba(148,163,184,.35);background:rgba(2,6,23,.58);color:var(--text);border-radius:13px;padding:11px 12px;font-size:15px;outline:none}input:focus,select:focus,textarea:focus{border-color:rgba(34,211,238,.75);box-shadow:0 0 0 3px rgba(34,211,238,.12)}textarea{min-height:108px;resize:vertical}option{background:#0f172a}.hint{font-size:13px;color:var(--muted);line-height:1.65}.ok{color:#34d399}.err{color:#f87171}.warn{color:#fbbf24}.muted{color:var(--muted)}.small{font-size:13px}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.75);padding:5px 9px;border-radius:999px;font-size:12px;color:#cbd5e1}.sold{background:rgba(239,68,68,.18);color:#fecaca;border-color:rgba(239,68,68,.35)}.live{background:rgba(16,185,129,.17);color:#bbf7d0;border-color:rgba(16,185,129,.35)}.draft{background:rgba(245,158,11,.17);color:#fde68a;border-color:rgba(245,158,11,.35)}
+.btn{border:0;border-radius:13px;padding:11px 15px;font-weight:1000;cursor:pointer;background:linear-gradient(135deg,#0891b2,#2563eb);color:white;box-shadow:0 12px 32px rgba(37,99,235,.24);margin:3px 4px 3px 0}.btn:hover{filter:brightness(1.09)}.btn.gray{background:#334155;box-shadow:none}.btn.red{background:#dc2626;box-shadow:none}.btn.green{background:#059669;box-shadow:none}.btn.light{background:#e0f2fe;color:#0f172a;box-shadow:none}.btn.ghost{background:rgba(15,23,42,.75);border:1px solid rgba(125,211,252,.25);box-shadow:none}.btn:disabled{opacity:.5;cursor:not-allowed}
+.kpi{min-height:118px;position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:999px;background:radial-gradient(circle,rgba(34,211,238,.28),transparent 66%)}.kpi span{font-size:13px;color:#93c5fd}.kpi b{display:block;font-size:32px;margin-top:8px}.kpi small{color:var(--muted)}
+.tablebox{width:100%;overflow:auto;border:1px solid rgba(125,211,252,.18);border-radius:16px;background:rgba(2,6,23,.38);resize:both;min-height:220px;max-height:none}.tablebox table{min-width:1120px;width:100%;border-collapse:collapse}.tablebox th,.tablebox td{padding:10px;border-bottom:1px solid rgba(148,163,184,.18);text-align:left;vertical-align:top;font-size:14px}.tablebox th{position:sticky;top:0;background:#0f172a;color:#a5f3fc;z-index:1}.tablebox td{color:#e2e8f0}.nowrap{white-space:nowrap}.copy{white-space:pre-wrap;line-height:1.75;background:rgba(2,6,23,.52);border:1px dashed rgba(34,211,238,.36);border-radius:16px;padding:14px;overflow:auto;resize:both;min-height:150px}.resizable{overflow:auto;resize:both;min-width:260px;min-height:220px;max-width:100%;max-height:none}
+.listing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.listing{overflow:hidden;padding:0}.photo-strip{display:flex;gap:8px;overflow:auto;padding:10px;background:rgba(2,6,23,.4);scroll-snap-type:x mandatory}.photo-strip img{height:190px;min-width:100%;object-fit:cover;border-radius:16px;scroll-snap-align:start;background:#111827}.listing-body{padding:16px}.price{font-size:24px;font-weight:1000;color:#67e8f9}.meta{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.filters{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:10px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:60;display:none;align-items:center;justify-content:center;padding:20px}.modal{width:min(1100px,96vw);max-height:92vh;overflow:auto;background:#07111f;border:1px solid rgba(34,211,238,.32);border-radius:22px;box-shadow:0 30px 100px rgba(0,0,0,.66);padding:18px}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.modal.show,.modal-mask.show{display:flex}.thumbs{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:10px}.thumb{border:1px solid rgba(125,211,252,.22);border-radius:14px;padding:8px;background:rgba(2,6,23,.42)}.thumb img{width:100%;height:120px;object-fit:cover;border-radius:10px}.photo-empty{height:190px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(8,47,73,.65),rgba(15,23,42,.85));color:#7dd3fc;border-radius:16px}
+@media(max-width:1180px){.grid{grid-template-columns:repeat(2,1fr)}.listing-grid{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:repeat(2,minmax(180px,1fr))}}
+@media(max-width:860px){.shell{display:block}.nav{position:relative;top:auto;height:auto;display:grid;grid-template-columns:repeat(2,1fr)}main{padding:14px}.hero{min-height:330px;padding:22px}.hero h2{font-size:30px}.grid,.grid2,.grid3,.listing-grid,.formgrid,.formgrid3,.filters{grid-template-columns:1fr}.topbar{align-items:flex-start}.userbox{display:none}.thumbs{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand"><div class="logo">AI</div><div><h1>RealEstateAI V7 黑科技賣屋系統</h1><span>登入權限｜買方瀏覽｜主權限管理｜照片管理｜AI BOT 問答</span></div></div>
+  <div class="userbox" id="userBox">尚未登入</div>
+</div>
+<div class="shell"><aside class="nav" id="nav"></aside><main id="app"></main></div>
+<div class="modal-mask" id="modalMask"><div class="modal" id="modalBox"></div></div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const app=$("#app"), nav=$("#nav"), userBox=$("#userBox"), modalMask=$("#modalMask"), modalBox=$("#modalBox");
+let sb=null, user=null, profile=null;
+let cache={properties:[],photos:[],questions:[],profiles:[]};
+const VISIBLE_STATUS=["銷售中","已售出","保留中"];
+const statusBadge=s=>s==="已售出"?"sold":(s==="銷售中"?"live":"draft");
+const today=()=>new Date().toISOString().slice(0,10);
+const cfg=()=>({url:localStorage.getItem("SUPABASE_URL")||"",key:localStorage.getItem("SUPABASE_ANON_KEY")||""});
+const esc=x=>String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+const val=id=>document.getElementById(id)?.value?.trim()||"";
+const num=id=>Number(val(id)||0);
+const isAdmin=()=>profile?.role==="admin";
+const fmtPrice=n=>Number(n||0).toLocaleString("zh-TW");
+const short=x=>String(x||"").length>70?String(x).slice(0,70)+"…":String(x||"");
+function toast(msg){alert(msg)}
+function initClient(){const c=cfg(); if(c.url&&c.key) sb=createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true}})}
+initClient();
+
+async function refreshUser(){
+  if(!sb){user=null;profile=null;return}
+  const {data}=await sb.auth.getUser(); user=data?.user||null;
+  if(user){await ensureProfile(); await loadProfile()} else profile=null;
+  renderUserBox();
+}
+async function ensureProfile(){
+  if(!user) return;
+  const {data}=await sb.from("profiles").select("id").eq("id",user.id).maybeSingle();
+  if(!data){await sb.from("profiles").insert({id:user.id,email:user.email,display_name:user.user_metadata?.display_name||user.email?.split("@")[0],role:"buyer"});}
+}
+async function loadProfile(){
+  const {data,error}=await sb.from("profiles").select("*").eq("id",user.id).maybeSingle();
+  if(error){console.warn(error.message); profile={id:user.id,email:user.email,role:"buyer"};}
+  else profile=data||{id:user.id,email:user.email,role:"buyer"};
+}
+function renderUserBox(){
+  if(!sb){userBox.innerHTML="未設定 Supabase";return}
+  if(!user){userBox.innerHTML="尚未登入";return}
+  userBox.innerHTML=`${esc(user.email)}<br><span class="pill ${isAdmin()?"live":""}">${isAdmin()?"主權限人 Admin":"買方會員 Buyer"}</span>`;
+}
+function requireSB(){if(!sb){route("setup");return false}return true}
+function requireLogin(){if(!requireSB())return false;if(!user){route("auth");return false}return true}
+function requireAdmin(){if(!requireLogin())return false;if(!isAdmin()){app.innerHTML=msg("此功能只有主權限人可以使用。", "err");return false}return true}
+function msg(text,cls=""){return `<div class="card ${cls}">${text}</div>`}
+function field(label,id,type="text",value="",extra=""){return `<div class="field"><label>${label}</label><input id="${id}" type="${type}" value="${esc(value)}" ${extra}></div>`}
+function area(label,id,value="",extra=""){return `<div class="field"><label>${label}</label><textarea id="${id}" ${extra}>${esc(value)}</textarea></div>`}
+function selectField(label,id,options,value=""){return `<div class="field"><label>${label}</label><select id="${id}">${options.map(o=>`<option ${o==value?"selected":""}>${esc(o)}</option>`).join("")}</select></div>`}
+function kpi(a,b,c=""){return `<div class="card kpi"><span>${a}</span><b>${b}</b><small>${c}</small></div>`}
+function table(rows,cols){
+  if(!rows?.length) return `<div class="card hint">目前沒有資料。</div>`;
+  return `<div class="tablebox"><table><thead><tr>${cols.map(c=>`<th>${c[1]}</th>`).join("")}</tr></thead><tbody>${rows.map((r,i)=>`<tr>${cols.map(c=>`<td>${typeof c[0]==="function"?c[0](r,i):esc(r[c[0]])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+function copyText(id){navigator.clipboard?.writeText(document.getElementById(id)?.innerText||"");toast("已複製")}
+function dl(name,text,type="application/json"){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click()}
+function showModal(html){modalBox.innerHTML=html;modalMask.classList.add("show");}
+function closeModal(){modalMask.classList.remove("show");modalBox.innerHTML=""}
+modalMask.addEventListener("click",e=>{if(e.target===modalMask)closeModal()});
+window.closeModal=closeModal; window.copyText=copyText; window.dl=dl;
+
+function navItems(){
+  const base=[{g:"系統",id:"setup",t:"Supabase 設定"},{g:"系統",id:"auth",t:user?"帳號 / 登出":"登入 / 申請帳號"},{g:"前台",id:"home",t:"黑科技首頁"}];
+  if(!user) return base;
+  const buyer=[{g:"買方",id:"listings",t:"賣屋資訊瀏覽"},{g:"買方",id:"ask",t:"買方詢問 AI BOT"},{g:"買方",id:"myq",t:"我的詢問紀錄"}];
+  const admin=isAdmin()?[{g:"主權限",id:"adminProp",t:"新增 / 更新賣屋資料"},{g:"主權限",id:"photos",t:"照片新增 / 刪除"},{g:"主權限",id:"questions",t:"買方問題管理"},{g:"主權限",id:"users",t:"帳號權限管理"},{g:"資料",id:"backup",t:"雲端備份匯出"}]:[];
+  return [...base,...buyer,...admin,{g:"說明",id:"help",t:"使用說明"}];
+}
+function navRender(active){
+  const items=navItems(); let html="", last="";
+  for(const it of items){if(it.g!==last){html+=`<div class="group">${it.g}</div>`; last=it.g} html+=`<button class="${it.id===active?"on":""}" onclick="route('${it.id}')"><span>${it.t}</span><span>›</span></button>`}
+  nav.innerHTML=html;
+}
+window.route=async function(p){await refreshUser(); const page=p||"home"; navRender(page); location.hash=page; (views[page]||views.home)();}
+
+async function fetchProperties(){const {data,error}=await sb.from("properties").select("*").order("created_at",{ascending:false}); if(error){toast(error.message);return[]} cache.properties=data||[]; return cache.properties;}
+async function fetchPhotos(){const {data,error}=await sb.from("property_photos").select("*").order("sort_order",{ascending:true}); if(error){console.warn(error.message);return[]} cache.photos=data||[]; return cache.photos;}
+async function propertyPhotos(id){if(!cache.photos.length) await fetchPhotos(); return cache.photos.filter(p=>p.property_id===id)}
+async function fetchQuestions(){const {data,error}=await sb.from("buyer_questions").select("*,properties(title,city,district,price,status)").order("created_at",{ascending:false}); if(error){toast(error.message);return[]} cache.questions=data||[]; return cache.questions;}
+async function insertRow(t,row){const {error}=await sb.from(t).insert(row); if(error) toast(error.message); else toast("已儲存")}
+async function updateRow(t,id,row){const {error}=await sb.from(t).update(row).eq("id",id); if(error) toast(error.message); else toast("已更新")}
+async function deleteRow(t,id,after){if(!confirm("確定刪除？"))return; const {error}=await sb.from(t).delete().eq("id",id); if(error) toast(error.message); else {toast("已刪除"); if(after) after();}}
+window.deleteRow=deleteRow;
+
+function botAnalyze(question,prop){
+  const q=String(question||""); let intent="需求確認", risk="AI 回覆為初步說明，正式價格、貸款、屋況與合約仍需由專人確認。";
+  let reply="我先幫您整理需求。請提供想找的區域、預算、房數、是否需要車位與入住時間，我可以先幫您比對目前可看的物件。";
+  if(/價格|便宜|殺價|議價|降價|出價|行情/.test(q)){intent="價格 / 議價"; reply=`這題可以從三個方向評估：一是同區近期行情，二是屋況整理成本，三是屋主出售急迫性。${prop?`您詢問的「${prop.title}」目前開價 ${fmtPrice(prop.price)} 萬，建議先比較同區屋齡、坪數、車位與樓層，再抓合理出價區間。`:"若您指定物件，我可以依物件條件整理初步議價話術。"}`;}
+  else if(/貸款|自備|頭期|月付|利率|銀行|成數/.test(q)){intent="貸款 / 自備款"; reply=`建議先抓總價、自備款、貸款成數、年限與月付壓力。${prop?`以「${prop.title}」開價 ${fmtPrice(prop.price)} 萬來看，仍需再加上稅費、代書、裝修與搬家預備金。`:"選定物件後，可以再做月付概算。"}`;}
+  else if(/漏水|壁癌|屋況|驗屋|噪音|採光|水壓|電線|管線/.test(q)){intent="屋況風險"; reply="看屋建議重點檢查：天花板與窗邊是否滲水、牆角壁癌、浴室排水與通風、水壓、電箱、管線、噪音來源、車位動線與管理狀況。必要時可安排專業驗屋。";}
+  else if(/捷運|學校|生活|交通|商圈|公園|機能/.test(q)){intent="生活機能"; reply=`生活機能要看通勤時間、學區、採買、醫療、公園與噪音。${prop?`「${prop.title}」可先確認地址周邊捷運/公車、學校與商圈距離，再決定是否安排看屋。`:"您可以指定區域或物件，我再幫您整理比較重點。"}`;}
+  else if(/已售|售出|還有嗎|可以看嗎|預約|看屋/.test(q)){intent="預約看屋 / 物件狀態"; reply=prop?`「${prop.title}」目前狀態是「${prop.status}」。若仍可安排，我建議留下方便看屋時段、聯絡電話與同行人數，我會請專人確認。`:"請先選擇想看的物件，我可以幫您送出看屋詢問。";}
+  return {intent,reply,risk,full:`【AI BOT 自動回覆】\n問題類型：${intent}\n\n${reply}\n\n【提醒】\n${risk}`};
+}
+function propertyOption(selected=""){return cache.properties.map(p=>`<option value="${p.id}" ${p.id===selected?"selected":""}>${esc(p.title)}｜${esc(p.city||"")}${esc(p.district||"")}｜${esc(p.status)}</option>`).join("")}
+
+const views={
+setup(){
+  const c=cfg();
+  app.innerHTML=`<div class="hero"><div class="hero-content"><span class="badge">SUPABASE CLOUD SETUP</span><h2>先連接雲端資料庫，再開放買方登入瀏覽</h2><p>本版是純前端 Web + Supabase Auth + PostgreSQL + RLS 權限控管。主權限人管理賣屋資料與照片，買方需申請帳號密碼後才能瀏覽與詢問。</p></div></div>
+  <div class="card"><h2>Supabase 設定</h2><div class="formgrid3">${field("SUPABASE_URL","su","text",c.url,"placeholder='https://xxxx.supabase.co'")}<div class="field" style="grid-column:span 2"><label>SUPABASE_ANON_KEY</label><textarea id="sk" placeholder="anon public key">${esc(c.key)}</textarea></div></div><button class="btn" onclick="saveConfig()">儲存設定</button><button class="btn gray" onclick="clearConfig()">清除設定</button><p class="hint">狀態：${sb?"<span class='ok'>已建立 Supabase Client</span>":"<span class='err'>尚未設定</span>"}</p></div>
+  <div class="card"><h3>重要權限說明</h3><p class="hint">執行新版 SQL 後，第一個註冊帳號會自動成為 <b>主權限人 Admin</b>。其他申請帳號預設為 <b>買方 Buyer</b>。若要手動指定主權限人，可到 Supabase SQL Editor 執行：<br><code>update public.profiles set role='admin' where email='你的信箱';</code></p></div>`;
+},
+auth(){
+  if(!requireSB())return;
+  app.innerHTML=`<div class="hero"><div class="hero-content"><span class="badge">LOGIN REQUIRED</span><h2>申請帳號密碼後，才能瀏覽賣屋資訊</h2><p>買方會員可以看物件、詢問 AI BOT、留下問題。主權限人可以新增、修改、刪除物件資料與照片。</p></div></div>
+  <div class="grid2"><div class="card"><h2>登入</h2>${user?`<p class="ok">已登入：${esc(user.email)}</p><p>目前角色：<b>${isAdmin()?"主權限人 Admin":"買方 Buyer"}</b></p><button class="btn red" onclick="logout()">登出</button>`:`${field("Email","loginEmail","email","","autocomplete='email'")}${field("Password","loginPw","password","","autocomplete='current-password'")}<button class="btn" onclick="login()">登入</button>`}</div>
+  <div class="card"><h2>申請帳號</h2>${field("Email","regEmail","email","","autocomplete='email'")}${field("Password（至少 6 碼）","regPw","password","","autocomplete='new-password'")}${field("顯示名稱","regName","text","")}<button class="btn green" onclick="signup()">申請帳號</button><p class="hint">若 Supabase 開啟 Email confirmation，申請後需先到信箱驗證。</p></div></div>`;
+},
+async home(){
+  if(!requireLogin())return;
+  await fetchProperties(); await fetchPhotos(); await fetchQuestions();
+  const live=cache.properties.filter(p=>p.status==="銷售中").length, sold=cache.properties.filter(p=>p.status==="已售出").length;
+  app.innerHTML=`<div class="hero"><div class="hero-content"><span class="badge">AI SMART REAL ESTATE</span><h2>黑科技賣屋首頁</h2><p>用權限登入保護賣屋資訊，主權限人管理物件與照片，買方可登入瀏覽並透過 AI BOT 詢問價格、貸款、屋況、交通與看屋問題。</p><div class="hero-actions"><button class="btn" onclick="route('listings')">瀏覽賣屋資訊</button><button class="btn light" onclick="route('ask')">買方詢問 AI BOT</button>${isAdmin()?`<button class="btn green" onclick="route('adminProp')">主權限新增物件</button>`:""}</div></div></div>
+  <div class="grid">${kpi("銷售中物件",live,"買方可瀏覽")}${kpi("已售出",sold,"狀態清楚標示")}${kpi("照片數",cache.photos.length,"可上下左右拉動管理")}${kpi("買方詢問",cache.questions.length,"AI 自動回覆紀錄")}</div>
+  <div class="card"><h2>系統功能總覽</h2><div class="grid3"><div class="card glass"><h3>買方權限</h3><p class="hint">註冊登入後才能瀏覽賣屋資訊、查看照片、篩選區域與價格，並送出詢問。</p></div><div class="card glass"><h3>主權限管理</h3><p class="hint">Admin 可新增/更新/刪除物件、設定已售出、管理照片、查看買方問題與帳號權限。</p></div><div class="card glass"><h3>AI BOT</h3><p class="hint">內建買方問答分類：價格議價、貸款、自備款、屋況、生活機能、預約看屋。</p></div></div></div>`;
+},
+async listings(){
+  if(!requireLogin())return;
+  await fetchProperties(); await fetchPhotos();
+  const cityOpts=[...new Set(cache.properties.map(p=>p.city).filter(Boolean))];
+  app.innerHTML=`<div class="card"><h2>賣屋資訊瀏覽</h2><p class="hint">已登入會員才能瀏覽。下方區塊、照片列、表格都支援上下/左右捲動，不會被版面限制。</p><div class="filters"><input id="fKey" placeholder="搜尋物件/區域/特色"><select id="fCity"><option value="">全部縣市</option>${cityOpts.map(c=>`<option>${esc(c)}</option>`).join("")}</select><select id="fStatus"><option value="">全部狀態</option><option>銷售中</option><option>已售出</option><option>保留中</option></select><input id="fMin" type="number" placeholder="最低總價"><input id="fMax" type="number" placeholder="最高總價"><button class="btn" onclick="renderListings()">篩選</button></div></div><div id="listingOut"></div>`;
+  renderListings();
+},
+async ask(){
+  if(!requireLogin())return;
+  await fetchProperties();
+  const visible=cache.properties.filter(p=>VISIBLE_STATUS.includes(p.status)); cache.properties=visible;
+  app.innerHTML=`<div class="card"><h2>買方詢問 AI BOT</h2><p class="hint">買方可選物件後提問，系統會自動產生回覆並儲存詢問紀錄，主權限人也能在後台查看。</p><div class="formgrid3"><div class="field"><label>詢問物件</label><select id="qProp"><option value="">不指定物件</option>${propertyOption()}</select></div>${field("買方姓名","qName","text",profile?.display_name||"")}${field("聯絡方式 / LINE / 電話","qContact","text","")}</div>${area("買方問題","qText","我想問這間可以議價嗎？貸款大約要準備多少？")}<button class="btn" onclick="makeQuestion()">送出並由 AI BOT 自動回覆</button></div><div id="qOut"></div>`;
+},
+async myq(){
+  if(!requireLogin())return;
+  const rows=await fetchQuestions();
+  app.innerHTML=`<div class="card"><h2>我的詢問紀錄</h2></div>${table(rows,[[r=>r.properties?.title||"未指定","物件"],["question","問題"],["intent","類型"],["bot_answer","AI 回覆"],["status","狀態"],[r=>new Date(r.created_at).toLocaleString("zh-TW"),"時間"]])}`;
+},
+async adminProp(){
+  if(!requireAdmin())return;
+  await fetchProperties();
+  app.innerHTML=`<div class="card"><h2>主權限｜新增 / 更新賣屋資料</h2><p class="hint">可新增、修改、刪除賣屋資訊；「狀態」已新增 <b>已售出</b> 選項。點選編輯可回填到表單。</p>${propertyForm()}<button class="btn" onclick="saveProperty()">儲存物件</button><button class="btn gray" onclick="clearPropertyForm()">清空表單</button></div><div class="card"><h3>物件清單</h3>${propertyAdminTable()}</div>`;
+},
+async photos(){
+  if(!requireAdmin())return;
+  await fetchProperties(); await fetchPhotos();
+  const first=cache.properties[0]?.id||"";
+  app.innerHTML=`<div class="card"><h2>主權限｜照片新增 / 刪除</h2><p class="hint">可貼照片網址，也可上傳圖片轉成資料庫圖片。大量正式上線建議改 Supabase Storage，本 Starter 版先用最簡單方式。</p><div class="formgrid3"><div class="field"><label>選擇物件</label><select id="photoProp" onchange="renderPhotoList()">${propertyOption(first)}</select></div>${field("照片網址 URL","photoUrl","url","")} ${field("照片說明","photoCap","text","")}</div><div class="formgrid3"><div class="field"><label>或上傳照片</label><input id="photoFile" type="file" accept="image/*"></div>${field("排序","photoSort","number","0")}</div><button class="btn" onclick="addPhoto()">加入照片</button></div><div id="photoOut"></div>`;
+  renderPhotoList();
+},
+async questions(){
+  if(!requireAdmin())return;
+  const rows=await fetchQuestions();
+  app.innerHTML=`<div class="card"><h2>主權限｜買方問題管理</h2><p class="hint">可查看所有買方提問、AI 回覆與處理狀態。</p></div>${table(rows,[[r=>r.properties?.title||"未指定","物件"],["buyer_name","買方"],["contact","聯絡方式"],["question","問題"],["intent","類型"],["bot_answer","AI 回覆"],[r=>`<select onchange="updateQuestionStatus('${r.id}',this.value)"><option ${r.status==="新問題"?"selected":""}>新問題</option><option ${r.status==="已回覆"?"selected":""}>已回覆</option><option ${r.status==="已預約"?"selected":""}>已預約</option><option ${r.status==="結案"?"selected":""}>結案</option></select>`,"狀態"],[r=>new Date(r.created_at).toLocaleString("zh-TW"),"時間"]])}`;
+},
+async users(){
+  if(!requireAdmin())return;
+  const {data,error}=await sb.from("profiles").select("*").order("created_at",{ascending:false}); if(error){toast(error.message);return} cache.profiles=data||[];
+  app.innerHTML=`<div class="card"><h2>主權限｜帳號權限管理</h2><p class="hint">可把帳號設為 buyer 或 admin。請至少保留一個主權限人。</p></div>${table(cache.profiles,[["email","Email"],["display_name","名稱"],["role","角色"],[r=>`<select onchange="updateRole('${r.id}',this.value)"><option value="buyer" ${r.role==="buyer"?"selected":""}>buyer</option><option value="admin" ${r.role==="admin"?"selected":""}>admin</option></select>`,"調整權限"],[r=>new Date(r.created_at).toLocaleString("zh-TW"),"建立時間"]])}`;
+},
+async backup(){
+  if(!requireAdmin())return;
+  await fetchProperties(); await fetchPhotos(); await fetchQuestions();
+  const {data:profileRows}=await sb.from("profiles").select("*").order("created_at",{ascending:false});
+  cache.profiles=profileRows||[];
+  const all={backup_at:new Date().toISOString(),profiles:cache.profiles,properties:cache.properties,property_photos:cache.photos,buyer_questions:cache.questions};
+  app.innerHTML=`<div class="card"><h2>雲端備份匯出</h2><p class="hint">匯出目前前端可讀取的 Supabase 資料。</p><button class="btn" onclick='dl("RealEstateAI_V7_backup.json", ${JSON.stringify(JSON.stringify(all,null,2))})'>下載 JSON 備份</button></div><div class="card"><div class="copy">${esc(JSON.stringify(all,null,2)).slice(0,12000)}</div></div>`;
+},
+help(){
+  app.innerHTML=`<div class="card"><h2>使用說明</h2><ol class="hint"><li>打開 Supabase，建立專案。</li><li>進入 SQL Editor，貼上 <b>supabase_schema.sql</b> 全部執行。</li><li>打開 Authentication → Providers，確認 Email 已啟用。</li><li>回到本網頁「Supabase 設定」，貼上 Project URL 與 anon public key。</li><li>第一個註冊帳號會成為主權限人；其他帳號為買方。</li><li>主權限人新增物件與照片後，買方登入即可瀏覽並詢問 AI BOT。</li></ol></div>`;
+}
+};
+
+function propertyForm(p={}){
+  return `<input type="hidden" id="pId" value="${esc(p.id||"")}"><div class="formgrid">
+  ${field("物件標題","pTitle","text",p.title||"")}${field("縣市","pCity","text",p.city||"")}${field("行政區","pDistrict","text",p.district||"")}${field("詳細地址","pAddress","text",p.address||"")}
+  ${field("總價（萬）","pPrice","number",p.price||0)}${field("原價（萬）","pOldPrice","number",p.old_price||0)}${field("建坪","pPing","number",p.ping||0)}${field("地坪","pLandPing","number",p.land_ping||0)}
+  ${field("格局","pRooms","text",p.rooms||"3房2廳2衛")}${field("樓層","pFloor","text",p.floor||"")}${field("總樓層","pTotalFloor","text",p.total_floor||"")}${selectField("車位","pParking",["無","坡平","坡機","機械","平面","另租"],p.parking||"無")}
+  ${field("屋齡","pAge","number",p.age||0)}${field("建物類型","pType","text",p.building_type||"電梯大樓")}${field("社區名稱","pCommunity","text",p.community||"")}${selectField("狀態","pStatus",["銷售中","已售出","保留中","草稿","暫停"],p.status||"銷售中")}
+  ${field("捷運 / 交通","pMrt","text",p.mrt||"")}${field("學區","pSchool","text",p.school||"")}${field("管理費","pMgmt","number",p.management_fee||0)}${field("屋主 / 聯絡窗口","pOwner","text",p.owner_name||"")}
+  </div><div class="formgrid3">${area("特色標籤","pTags",p.tags||"捷運,採光,車位")}${area("完整說明","pDesc",p.description||"")}${area("缺點 / 風險提醒","pDefects",p.defects||"")}</div>`;
+}
+function propertyAdminTable(){
+  return table(cache.properties,[["title","物件"],[r=>`${esc(r.city||"")}${esc(r.district||"")}`,"區域"],[r=>`${fmtPrice(r.price)} 萬`,"總價"],["ping","坪數"],["rooms","格局"],["parking","車位"],[r=>`<span class="pill ${statusBadge(r.status)}">${esc(r.status)}</span>`,"狀態"],[r=>`<button class="btn light" onclick="editProperty('${r.id}')">編輯</button><button class="btn ghost" onclick="route('photos');setTimeout(()=>{const e=document.getElementById('photoProp');if(e){e.value='${r.id}';renderPhotoList()}},200)">照片</button><button class="btn red" onclick="deleteRow('properties','${r.id}',()=>route('adminProp'))">刪除</button>`,"操作"]]);
+}
+window.editProperty=function(id){const p=cache.properties.find(x=>x.id===id); if(!p)return; app.querySelector(".card").innerHTML=`<h2>主權限｜編輯賣屋資料</h2>${propertyForm(p)}<button class="btn" onclick="saveProperty()">更新物件</button><button class="btn gray" onclick="clearPropertyForm()">清空表單</button>`; window.scrollTo({top:0,behavior:"smooth"});}
+window.clearPropertyForm=function(){route("adminProp")}
+window.saveProperty=async function(){
+  if(!requireAdmin())return;
+  const id=val("pId");
+  const row={title:val("pTitle"),city:val("pCity"),district:val("pDistrict"),address:val("pAddress"),price:num("pPrice"),old_price:num("pOldPrice"),ping:num("pPing"),land_ping:num("pLandPing"),rooms:val("pRooms"),floor:val("pFloor"),total_floor:val("pTotalFloor"),parking:val("pParking"),age:num("pAge"),building_type:val("pType"),community:val("pCommunity"),status:val("pStatus"),mrt:val("pMrt"),school:val("pSchool"),management_fee:num("pMgmt"),owner_name:val("pOwner"),tags:val("pTags"),description:val("pDesc"),defects:val("pDefects"),updated_at:new Date().toISOString()};
+  if(!row.title){toast("請輸入物件標題");return}
+  if(id) await updateRow("properties",id,row); else await insertRow("properties",row);
+  route("adminProp");
+}
+
+window.renderListings=async function(){
+  const key=(val("fKey")||"").toLowerCase(), city=val("fCity"), st=val("fStatus"), min=num("fMin"), max=num("fMax");
+  let rows=cache.properties.filter(p=>VISIBLE_STATUS.includes(p.status));
+  rows=rows.filter(p=>(!city||p.city===city)&&(!st||p.status===st)&&(!min||Number(p.price)>=min)&&(!max||Number(p.price)<=max));
+  if(key) rows=rows.filter(p=>JSON.stringify(p).toLowerCase().includes(key));
+  const cards=await Promise.all(rows.map(async p=>listingCard(p)));
+  $("#listingOut").innerHTML=cards.length?`<div class="listing-grid">${cards.join("")}</div>`:msg("沒有符合條件的物件。")
+}
+async function listingCard(p){
+  const photos=await propertyPhotos(p.id); const photoHtml=photos.length?photos.map(ph=>`<img src="${esc(ph.photo_url)}" alt="${esc(ph.caption||p.title)}">`).join(""):`<div class="photo-empty">尚未上傳照片</div>`;
+  return `<div class="card listing"><div class="photo-strip">${photoHtml}</div><div class="listing-body"><div style="display:flex;justify-content:space-between;gap:10px"><h3>${esc(p.title)}</h3><span class="pill ${statusBadge(p.status)}">${esc(p.status)}</span></div><div class="price">${fmtPrice(p.price)} 萬</div><div class="meta"><span class="pill">${esc(p.city||"")}${esc(p.district||"")}</span><span class="pill">${esc(p.ping||0)} 坪</span><span class="pill">${esc(p.rooms||"")}</span><span class="pill">車位：${esc(p.parking||"無")}</span></div><p class="hint">${esc(short(p.description||p.tags||""))}</p><button class="btn" onclick="openProperty('${p.id}')">查看詳細</button><button class="btn light" onclick="route('ask');setTimeout(()=>{const e=document.getElementById('qProp');if(e)e.value='${p.id}'},200)">我要詢問</button></div></div>`
+}
+window.openProperty=async function(id){
+  const p=cache.properties.find(x=>x.id===id); if(!p)return; const photos=await propertyPhotos(id);
+  showModal(`<div class="modal-head"><h2>${esc(p.title)}</h2><button class="btn gray" onclick="closeModal()">關閉</button></div><div class="photo-strip resizable">${photos.length?photos.map(ph=>`<img src="${esc(ph.photo_url)}">`).join(""):`<div class="photo-empty">尚未上傳照片</div>`}</div><div class="grid2"><div class="card glass"><h3>物件資訊</h3><p class="price">${fmtPrice(p.price)} 萬</p><p>${esc(p.city||"")}${esc(p.district||"")} ${esc(p.address||"")}</p><div class="meta"><span class="pill ${statusBadge(p.status)}">${esc(p.status)}</span><span class="pill">${esc(p.ping||0)} 坪</span><span class="pill">${esc(p.rooms||"")}</span><span class="pill">${esc(p.building_type||"")}</span><span class="pill">屋齡 ${esc(p.age||0)}</span></div></div><div class="card glass"><h3>交通 / 學區</h3><p class="hint">捷運：${esc(p.mrt||"未填")}</p><p class="hint">學區：${esc(p.school||"未填")}</p><p class="hint">社區：${esc(p.community||"未填")}</p></div></div><div class="card glass"><h3>完整說明</h3><div class="copy">${esc(p.description||"尚未填寫")}</div></div><div class="card glass"><h3>特色 / 風險提醒</h3><p class="hint">特色：${esc(p.tags||"未填")}</p><p class="warn">${esc(p.defects||"未填風險提醒")}</p></div><button class="btn" onclick="closeModal();route('ask');setTimeout(()=>{const e=document.getElementById('qProp');if(e)e.value='${p.id}'},200)">詢問這間</button>`);
+}
+
+function fileToDataUrl(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
+window.addPhoto=async function(){
+  if(!requireAdmin())return; const property_id=val("photoProp"); if(!property_id){toast("請先選擇物件");return}
+  let photo_url=val("photoUrl"); const file=document.getElementById("photoFile")?.files?.[0]; if(file) photo_url=await fileToDataUrl(file);
+  if(!photo_url){toast("請貼照片網址或上傳照片");return}
+  await insertRow("property_photos",{property_id,photo_url,caption:val("photoCap"),sort_order:num("photoSort")}); await fetchPhotos(); renderPhotoList();
+}
+window.renderPhotoList=function(){
+  const pid=val("photoProp"); const rows=cache.photos.filter(p=>p.property_id===pid);
+  $("#photoOut").innerHTML=`<div class="card"><h3>目前照片</h3>${rows.length?`<div class="thumbs">${rows.map(ph=>`<div class="thumb"><img src="${esc(ph.photo_url)}"><p class="hint">${esc(ph.caption||"")}</p><button class="btn red" onclick="deleteRow('property_photos','${ph.id}',async()=>{await fetchPhotos();renderPhotoList()})">刪除照片</button></div>`).join("")}</div>`:"<p class='hint'>此物件尚未新增照片。</p>"}</div>`;
+}
+
+window.makeQuestion=async function(){
+  if(!requireLogin())return; const property_id=val("qProp")||null, question=val("qText"); if(!question){toast("請輸入問題");return}
+  const prop=cache.properties.find(p=>p.id===property_id); const b=botAnalyze(question,prop);
+  await insertRow("buyer_questions",{property_id,buyer_name:val("qName"),contact:val("qContact"),question,intent:b.intent,bot_answer:b.full,status:"新問題"});
+  $("#qOut").innerHTML=`<div class="card"><h3>AI BOT 已自動回覆</h3><button class="btn light" onclick="copyText('botAns')">複製回覆</button><div id="botAns" class="copy">${esc(b.full)}</div></div>`;
+}
+window.updateQuestionStatus=async function(id,status){await updateRow("buyer_questions",id,{status,updated_at:new Date().toISOString()});}
+window.updateRole=async function(id,role){if(id===user.id&&role!=="admin"&&!confirm("你正在調整自己的主權限，確定？"))return; await updateRow("profiles",id,{role,updated_at:new Date().toISOString()}); await route("users");}
+
+window.saveConfig=()=>{localStorage.setItem("SUPABASE_URL",val("su"));localStorage.setItem("SUPABASE_ANON_KEY",val("sk"));location.reload()}
+window.clearConfig=()=>{localStorage.removeItem("SUPABASE_URL");localStorage.removeItem("SUPABASE_ANON_KEY");location.reload()}
+window.signup=async()=>{if(!requireSB())return; const email=val("regEmail"), password=val("regPw"), display_name=val("regName"); if(!email||!password){toast("請輸入 Email 與 Password");return} const {error}=await sb.auth.signUp({email,password,options:{data:{display_name}}}); toast(error?error.message:"申請完成。若有信箱驗證，請先收信；沒有驗證時可直接登入。")}
+window.login=async()=>{if(!requireSB())return; const {error}=await sb.auth.signInWithPassword({email:val("loginEmail"),password:val("loginPw")}); if(error) toast(error.message); else route("home")}
+window.logout=async()=>{await sb.auth.signOut(); user=null;profile=null;route("auth")}
+
+sb?.auth.onAuthStateChange(()=>setTimeout(()=>route(location.hash.replace("#","")||"home"),0));
+route(location.hash.replace("#","")||"home");
+</script>
+</body>
+</html>

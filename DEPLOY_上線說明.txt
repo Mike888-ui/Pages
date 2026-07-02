@@ -1,0 +1,22 @@
+RealEstateAI V7 上線方式
+
+方案 A：本機測試
+1. 解壓縮 ZIP。
+2. 直接用 Chrome 開啟 index.html。
+3. 設定 Supabase URL / anon key。
+
+方案 B：Netlify
+1. 到 Netlify 新增 Site。
+2. 上傳整個 RealEstateAI_V7_Admin_Buyer_AI_Web 資料夾。
+3. 開啟網站後，到 Supabase 設定頁貼上 URL / anon key。
+
+方案 C：Cloudflare Pages / GitHub Pages
+1. 上傳 index.html、supabase_schema.sql、assets 資料夾。
+2. 設定 Supabase。
+3. 確認 Authentication 的 Site URL 已加入你的正式網址。
+
+Supabase 必做：
+1. SQL Editor 執行 supabase_schema.sql。
+2. Authentication 啟用 Email Provider。
+3. 若開啟信箱驗證，需設定 Site URL 與 Redirect URL。
+4. 第一個註冊帳號會自動變 admin。
