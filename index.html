@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RealEstateAI V7｜黑科技賣屋雲端系統</title>
+<title>RealEstateAI V7｜黑科技賣屋雲端系統｜Supabase Fix</title>
 <style>
 :root{
   --bg:#040812;--panel:rgba(9,17,34,.86);--panel2:rgba(15,23,42,.92);--line:rgba(125,211,252,.25);
@@ -51,6 +51,30 @@ const VISIBLE_STATUS=["銷售中","已售出","保留中"];
 const statusBadge=s=>s==="已售出"?"sold":(s==="銷售中"?"live":"draft");
 const today=()=>new Date().toISOString().slice(0,10);
 const cfg=()=>({url:localStorage.getItem("SUPABASE_URL")||"",key:localStorage.getItem("SUPABASE_ANON_KEY")||""});
+function isSupabaseUrl(u){
+  if(!u) return false;
+  try{
+    const x=new URL(u.trim());
+    return x.protocol==="https:" && /\.supabase\.co$/i.test(x.hostname);
+  }catch(e){return false}
+}
+function isSupabaseAnonKey(k){
+  k=String(k||"").trim();
+  return k.startsWith("eyJ") && k.split(".").length===3 && k.length>100;
+}
+function configError(c=cfg()){
+  const url=String(c.url||"").trim();
+  const key=String(c.key||"").trim();
+  if(!url&&!key) return "";
+  const errors=[];
+  if(!isSupabaseUrl(url)){
+    errors.push("SUPABASE_URL 必須是 Supabase Project URL，例如 https://xxxx.supabase.co，不能填 GitHub Pages 網址。");
+  }
+  if(!isSupabaseAnonKey(key)){
+    errors.push("SUPABASE_ANON_KEY 必須是 Supabase anon public key，通常以 eyJ 開頭，不能填 GitHub Commit 的 GPG Key。");
+  }
+  return errors.join("\n");
+}
 const esc=x=>String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
 const val=id=>document.getElementById(id)?.value?.trim()||"";
 const num=id=>Number(val(id)||0);
@@ -58,13 +82,37 @@ const isAdmin=()=>profile?.role==="admin";
 const fmtPrice=n=>Number(n||0).toLocaleString("zh-TW");
 const short=x=>String(x||"").length>70?String(x).slice(0,70)+"…":String(x||"");
 function toast(msg){alert(msg)}
-function initClient(){const c=cfg(); if(c.url&&c.key) sb=createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true}})}
+function initClient(){
+  const c=cfg();
+  const err=configError(c);
+  if(c.url&&c.key&&!err){
+    try{
+      sb=createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true}});
+    }catch(e){
+      console.warn("Supabase init failed:", e);
+      sb=null;
+    }
+  }else{
+    sb=null;
+  }
+}
 initClient();
 
 async function refreshUser(){
-  if(!sb){user=null;profile=null;return}
-  const {data}=await sb.auth.getUser(); user=data?.user||null;
-  if(user){await ensureProfile(); await loadProfile()} else profile=null;
+  if(!sb){user=null;profile=null;renderUserBox();return}
+  try{
+    const {data}=await sb.auth.getUser(); user=data?.user||null;
+    if(user){await ensureProfile(); await loadProfile()} else profile=null;
+  }catch(e){
+    console.warn("Supabase auth error:", e);
+    user=null; profile=null; sb=null;
+    const msg=String(e?.message||e||"");
+    if(msg.includes("Unexpected token") || msg.includes("not valid JSON")){
+      localStorage.setItem("LAST_SUPABASE_ERROR","Supabase URL / anon key 設定錯誤：目前伺服器回傳 HTML，不是 Supabase JSON API。請不要把 GitHub Pages 網址填到 SUPABASE_URL。");
+    }else{
+      localStorage.setItem("LAST_SUPABASE_ERROR",msg);
+    }
+  }
   renderUserBox();
 }
 async function ensureProfile(){
@@ -82,7 +130,11 @@ function renderUserBox(){
   if(!user){userBox.innerHTML="尚未登入";return}
   userBox.innerHTML=`${esc(user.email)}<br><span class="pill ${isAdmin()?"live":""}">${isAdmin()?"主權限人 Admin":"買方會員 Buyer"}</span>`;
 }
-function requireSB(){if(!sb){route("setup");return false}return true}
+function requireSB(){
+  const err=configError();
+  if(err || !sb){route("setup");return false}
+  return true
+}
 function requireLogin(){if(!requireSB())return false;if(!user){route("auth");return false}return true}
 function requireAdmin(){if(!requireLogin())return false;if(!isAdmin()){app.innerHTML=msg("此功能只有主權限人可以使用。", "err");return false}return true}
 function msg(text,cls=""){return `<div class="card ${cls}">${text}</div>`}
@@ -139,8 +191,13 @@ function propertyOption(selected=""){return cache.properties.map(p=>`<option val
 const views={
 setup(){
   const c=cfg();
+  const ce=configError(c);
+  const lastErr=localStorage.getItem("LAST_SUPABASE_ERROR")||"";
   app.innerHTML=`<div class="hero"><div class="hero-content"><span class="badge">SUPABASE CLOUD SETUP</span><h2>先連接雲端資料庫，再開放買方登入瀏覽</h2><p>本版是純前端 Web + Supabase Auth + PostgreSQL + RLS 權限控管。主權限人管理賣屋資料與照片，買方需申請帳號密碼後才能瀏覽與詢問。</p></div></div>
-  <div class="card"><h2>Supabase 設定</h2><div class="formgrid3">${field("SUPABASE_URL","su","text",c.url,"placeholder='https://xxxx.supabase.co'")}<div class="field" style="grid-column:span 2"><label>SUPABASE_ANON_KEY</label><textarea id="sk" placeholder="anon public key">${esc(c.key)}</textarea></div></div><button class="btn" onclick="saveConfig()">儲存設定</button><button class="btn gray" onclick="clearConfig()">清除設定</button><p class="hint">狀態：${sb?"<span class='ok'>已建立 Supabase Client</span>":"<span class='err'>尚未設定</span>"}</p></div>
+  ${ce?`<div class="card err"><h2>目前 Supabase 設定錯誤</h2><div class="copy">${esc(ce)}</div><p class="hint">你目前畫面填的是 GitHub Pages 網址 / GitHub 簽章 Key，這會讓系統抓到 HTML，因此登入時會出現：Unexpected token &lt; / not valid JSON。</p><button class="btn red" onclick="clearConfig()">一鍵清除錯誤設定</button></div>`:""}
+  ${lastErr&&!ce?`<div class="card warn"><h3>上次連線錯誤</h3><div class="copy">${esc(lastErr)}</div><button class="btn gray" onclick="localStorage.removeItem('LAST_SUPABASE_ERROR');route('setup')">清除錯誤訊息</button></div>`:""}
+  <div class="card"><h2>Supabase 設定</h2><div class="formgrid3">${field("SUPABASE_URL","su","text",c.url,"placeholder='https://xxxx.supabase.co'")}<div class="field" style="grid-column:span 2"><label>SUPABASE_ANON_KEY</label><textarea id="sk" placeholder="貼上 Supabase anon public key，通常以 eyJ 開頭">${esc(c.key)}</textarea></div></div><button class="btn" onclick="saveConfig()">儲存設定</button><button class="btn gray" onclick="clearConfig()">清除設定</button><p class="hint">狀態：${ce?`<span class='err'>設定格式錯誤</span>`:(sb?"<span class='ok'>已建立 Supabase Client</span>":"<span class='err'>尚未設定</span>")}</p></div>
+  <div class="card"><h3>正確填法</h3><p class="hint"><b>SUPABASE_URL</b> 要填 Supabase 專案網址，例如 <code>https://xxxx.supabase.co</code>，不是 <code>https://mike888-ui.github.io/Pages</code>。<br><b>SUPABASE_ANON_KEY</b> 要到 Supabase Project Settings → API 複製 <b>anon public key</b>，不是 GitHub Verified Signature 的 GPG Key。</p></div>
   <div class="card"><h3>重要權限說明</h3><p class="hint">執行新版 SQL 後，第一個註冊帳號會自動成為 <b>主權限人 Admin</b>。其他申請帳號預設為 <b>買方 Buyer</b>。若要手動指定主權限人，可到 Supabase SQL Editor 執行：<br><code>update public.profiles set role='admin' where email='你的信箱';</code></p></div>`;
 },
 auth(){
@@ -271,8 +328,22 @@ window.makeQuestion=async function(){
 window.updateQuestionStatus=async function(id,status){await updateRow("buyer_questions",id,{status,updated_at:new Date().toISOString()});}
 window.updateRole=async function(id,role){if(id===user.id&&role!=="admin"&&!confirm("你正在調整自己的主權限，確定？"))return; await updateRow("profiles",id,{role,updated_at:new Date().toISOString()}); await route("users");}
 
-window.saveConfig=()=>{localStorage.setItem("SUPABASE_URL",val("su"));localStorage.setItem("SUPABASE_ANON_KEY",val("sk"));location.reload()}
-window.clearConfig=()=>{localStorage.removeItem("SUPABASE_URL");localStorage.removeItem("SUPABASE_ANON_KEY");location.reload()}
+window.saveConfig=()=>{
+  const next={url:val("su"),key:val("sk")};
+  const err=configError(next);
+  if(!next.url||!next.key){toast("請填入 Supabase Project URL 與 anon public key。");return}
+  if(err){toast("Supabase 設定錯誤：\n\n"+err);return}
+  localStorage.removeItem("LAST_SUPABASE_ERROR");
+  localStorage.setItem("SUPABASE_URL",next.url);
+  localStorage.setItem("SUPABASE_ANON_KEY",next.key);
+  location.reload()
+}
+window.clearConfig=()=>{
+  localStorage.removeItem("SUPABASE_URL");
+  localStorage.removeItem("SUPABASE_ANON_KEY");
+  localStorage.removeItem("LAST_SUPABASE_ERROR");
+  location.reload()
+}
 window.signup=async()=>{if(!requireSB())return; const email=val("regEmail"), password=val("regPw"), display_name=val("regName"); if(!email||!password){toast("請輸入 Email 與 Password");return} const {error}=await sb.auth.signUp({email,password,options:{data:{display_name}}}); toast(error?error.message:"申請完成。若有信箱驗證，請先收信；沒有驗證時可直接登入。")}
 window.login=async()=>{if(!requireSB())return; const {error}=await sb.auth.signInWithPassword({email:val("loginEmail"),password:val("loginPw")}); if(error) toast(error.message); else route("home")}
 window.logout=async()=>{await sb.auth.signOut(); user=null;profile=null;route("auth")}
